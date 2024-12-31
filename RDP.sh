@@ -2,16 +2,12 @@
 
 #clear the console
 clear
-# Xreatlabs RDP Installer (TigerVNC Version)
-# This script installs TigerVNC for remote access and supports options for IPv4, IPv6, or "no IPv4/IPv6."
 
-# Colors for output
 GREEN="\033[0;32m"
 RED="\033[0;31m"
 CYAN="\033[0;36m"
 RESET="\033[0m"
 
-# Xreatlabs ASCII Logo
 echo -e "${CYAN}"
 echo "     _/   _\\     "
 echo "    /  Xreatlabs \\"
@@ -19,13 +15,11 @@ echo "   /______________\\"
 echo -e "${RESET}"
 echo -e "${GREEN}Welcome to Xreatlabs Remote Desktop Installer!${RESET}"
 
-# Check if script is run as root
 if [[ $EUID -ne 0 ]]; then
     echo -e "${RED}This script must be run as root! Use sudo.${RESET}"
     exit 1
 fi
 
-# Function to update the system
 update_system() {
     echo -e "${CYAN}Updating system packages...${RESET}"
     apt-get update -y && apt-get upgrade -y
@@ -35,7 +29,6 @@ update_system() {
     fi
 }
 
-# Function to install TigerVNC and desktop environment
 install_tigervnc() {
     echo -e "${CYAN}Installing TigerVNC server and XFCE desktop environment...${RESET}"
     apt-get install -y tigervnc-standalone-server tigervnc-common xfce4 xfce4-goodies xubuntu-desktop
@@ -45,7 +38,6 @@ install_tigervnc() {
     fi
 }
 
-# Function to configure TigerVNC
 configure_tigervnc() {
     echo -e "${CYAN}Configuring TigerVNC server...${RESET}"
     mkdir -p ~/.vnc
@@ -59,7 +51,6 @@ EOF
     chmod +x ~/.vnc/xstartup
 }
 
-# Function to enable IPv4
 enable_ipv4() {
     echo -e "${CYAN}Configuring TigerVNC for IPv4...${RESET}"
     systemctl enable vncserver@:1.service
@@ -67,7 +58,6 @@ enable_ipv4() {
     echo -e "${GREEN}TigerVNC is now configured with IPv4!${RESET}"
 }
 
-# Function to enable IPv6
 enable_ipv6() {
     echo -e "${CYAN}Configuring TigerVNC for IPv6...${RESET}"
     systemctl enable vncserver@:1.service
@@ -75,7 +65,6 @@ enable_ipv6() {
     echo -e "${GREEN}TigerVNC is now configured with IPv6!${RESET}"
 }
 
-# Function for "No IPv4/IPv6"
 configure_no_ipv4_ipv6() {
     echo -e "${CYAN}Configuring TigerVNC without IPv4 or IPv6...${RESET}"
     echo -e "${CYAN}Setting TigerVNC to listen only on the local socket...${RESET}"
@@ -88,7 +77,6 @@ EOF
     echo -e "${GREEN}TigerVNC is now configured to operate without IPv4/IPv6. Use SSH tunneling to connect.${RESET}"
 }
 
-# Menu for user selection
 echo -e "${GREEN}Choose the RDP configuration:${RESET}"
 echo "1. Install RDP with IPv4"
 echo "2. Install RDP with IPv6"
